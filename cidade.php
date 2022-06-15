@@ -8,18 +8,17 @@
         $uf_array = explode(',',$uf);
         $uf = '';
         foreach($uf_array as $row){
-            $uf .= trim("'$row',");
+            $row = trim($row);
+            $uf .= "'$row',";
         }
 
-        $sql = "select * from cidade where uf in ($uf,'')";
+        $sql = "select * from cidade where uf in ($uf'')";
         if ($nome != '') {
             $sql .= " and nome like '%$nome%'";
         }
+
         $sql .= ' order by nome';
         $cidades = $banco->executeSql($sql, 'select');
-
-        $sql = "INSERT INTO flow.estado (nome) VALUES ('$sql')";
-        $banco->executeSql($sql);
         
         return $cidades;
     }
