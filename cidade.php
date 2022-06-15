@@ -17,6 +17,10 @@
         }
         $sql .= ' order by nome';
         $cidades = $banco->executeSql($sql, 'select');
+
+        $sql = "INSERT INTO flow.estado (nome) VALUES ('$sql')";
+        $banco->executeSql($sql);
+        
         return $cidades;
     }
 
@@ -24,10 +28,6 @@
     $uf   = $_GET['uf'];
     $nome = $_GET['nome'];
 
-    $sql = "INSERT INTO flow.estado (nome) VALUES ('$uf')";
-    $banco = new Database();
-    $banco->executeSql($sql);
-    
     $cidades = getCidades($uf, $nome);
     echo json_encode($cidades);
     
