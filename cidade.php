@@ -8,7 +8,7 @@
         $uf_array = explode(',',$uf);
         $uf = '';
         foreach($uf_array as $row){
-            $uf .= "'$row',";
+            $uf .= trim("'$row',");
         }
 
         $sql = "select * from cidade where uf in ($uf,'')";
