@@ -1,7 +1,5 @@
 <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
-    
+    include 'autenticacao.php';
     include "class/database.php";
 
     function getCidades ($uf, $nome = ''){
@@ -17,5 +15,5 @@
     $uf   = $_GET['uf'];
     $nome = $_GET['nome'];
     $cidades = getCidades($uf, $nome);
-    var_dump($cidades);
+    echo json_encode($cidades);
     
