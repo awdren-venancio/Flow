@@ -23,13 +23,16 @@ class Database {
         }
     }
 
-    public function executeSql ($query) {
+    public function executeSql ($query, $tipo = '') {
         $conn = $this->conn->query($query);
-        $res = [];
-        while ($row = mysqli_fetch_assoc($conn)){
-            $res[] = $row;
-        }   
-        return $res;
+        
+        if ($tipo == 'select'){
+            $res = [];
+            while ($row = mysqli_fetch_assoc($conn)){
+                $res[] = $row;
+            }   
+            return $res;
+        }
     }
 
 }
