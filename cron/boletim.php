@@ -13,7 +13,7 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 100;
+$max_boletins = 1;
 
 $curl = curl_init();
 
@@ -132,12 +132,12 @@ foreach ($filtros as $filtro) {
             $item               = $licitacao['item'];
             $preco_edital       = $licitacao['preco_edital'];
             $valor_estimado     = $licitacao['valor_estimado'];
-            $orgao_nome         = str_replace("'","\'",$licitacao['orgao']['nome']);
+            $orgao_nome         = $licitacao['orgao']['nome'];
             $orgao_codigo       = $licitacao['orgao']['codigo'];
-            $orgao_cidade       = str_replace("'","\'",$licitacao['orgao']['cidade']);
+            $orgao_cidade       = $licitacao['orgao']['cidade'];
             $orgao_uf           = $licitacao['orgao']['uf'];
-            $orgao_endereco     = str_replace("'","\'",$licitacao['orgao']['endereco']);
-            $orgao_site         = str_replace("'","\'",$licitacao['orgao']['site']);
+            $orgao_endereco     = $licitacao['orgao']['endereco'];
+            $orgao_site         = $licitacao['orgao']['site'];
 
             $orgao_telefones    = $licitacao['orgao']['telefone'];
             
@@ -271,14 +271,18 @@ foreach ($filtros as $filtro) {
 
         foreach($acompanhamentos as $acompanhamento) {
             $id_acompanhamento  = $acompanhamento['id'];
+
+            if ($id_acompanhamento == '10073777'){
+                $teste = '';
+            }
             $id_licitacao       = $acompanhamento['licitacao_id'];
             $objeto             = $acompanhamento['objeto'];
             $sintese            = $acompanhamento['sintese'];
             $data_fonte         = $acompanhamento['data_fonte'];
             $edital             = $acompanhamento['edital'];
             $processo           = $acompanhamento['processo'];
-            $orgao_nome         = str_replace("'","\'",$acompanhamento['orgao']['nome']);
-            $orgao_cidade       = str_replace("'","\'",$acompanhamento['orgao']['cidade']);
+            $orgao_nome         = $acompanhamento['orgao']['nome'];
+            $orgao_cidade       = $acompanhamento['orgao']['cidade'];
             $orgao_uf           = $acompanhamento['orgao']['uf'];
 
             $sql = "select id_acompanhamento from acompanhamento where id_acompanhamento = '$id_acompanhamento'";
