@@ -16,7 +16,7 @@ $curl = curl_init();
 
 // Buscando os estados brasileiros
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+    CURLOPT_URL => 'http://servicodados.ibge.gov.br/api/v1/localidades/estados',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -38,7 +38,7 @@ foreach ($estados as $estado) {
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://servicodados.ibge.gov.br/api/v1/localidades/estados/$sigla/municipios",
+        CURLOPT_URL => "http://servicodados.ibge.gov.br/api/v1/localidades/estados/$sigla/municipios",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
