@@ -112,6 +112,7 @@ foreach ($filtros as $filtro) {
 
         foreach($licitacoes as $key_licitacao => $licitacao) {
             foreach($licitacao as $key_row => $row) {
+                $row = str_replace("\'","|'",$row);
                 $licitacao[$key_row] = str_replace("'","\'",$row);
             }
             $licitacoes[$key_licitacao] = $licitacao;
@@ -264,6 +265,7 @@ foreach ($filtros as $filtro) {
 
         foreach($acompanhamentos as $key_acompanhamentos => $acompanhamento) {
             foreach($acompanhamento as $key_row => $row) {
+                $row = str_replace("\'","|'",$row);
                 $acompanhamento[$key_row] = str_replace("'","\'",$row);
             }
             $acompanhamentos[$key_acompanhamentos] = $acompanhamento;
