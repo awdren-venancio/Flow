@@ -272,9 +272,6 @@ foreach ($filtros as $filtro) {
         foreach($acompanhamentos as $acompanhamento) {
             $id_acompanhamento  = $acompanhamento['id'];
 
-            if ($id_acompanhamento == '10073777'){
-                $teste = '';
-            }
             $id_licitacao       = $acompanhamento['licitacao_id'];
             $objeto             = $acompanhamento['objeto'];
             $sintese            = $acompanhamento['sintese'];
