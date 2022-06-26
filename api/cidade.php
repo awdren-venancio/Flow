@@ -1,6 +1,6 @@
 <?php
-    include 'autenticacao.php';
-    include "class/database.php";
+    include '../autenticacao.php';
+    include "../class/database.php";
 
     function getCidades ($uf, $nome = ''){
         $banco = new Database();
