@@ -1,6 +1,7 @@
 <?php
 ini_set('max_execution_time', 0);
 include "../class/database.php";
+include "../curl/categoria.php";
 $banco = new Database();
 
 $sql = "insert into log_cron (
@@ -15,25 +16,8 @@ $id_cron = $banco->executeSql($sql);
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
 $max_boletins = 20;
 
-$curl = curl_init();
-
-// Buscando os segmentos contratados no ConLicitacao
-curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://66.94.107.114/api/filtros.php',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-));
-
-$response = curl_exec($curl);
-curl_close($curl);
-
-$response = json_decode($response, true);
-$filtros = $response['filtros'];
+$categorias = getAllCategoria();
+$filtros = $categorias['filtros'];
 
 // Buscando os boletins para cada segmento/categoria
 foreach ($filtros as $filtro) {
