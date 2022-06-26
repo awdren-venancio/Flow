@@ -13,7 +13,7 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 100;
+$max_boletins = 20;
 
 $curl = curl_init();
 
