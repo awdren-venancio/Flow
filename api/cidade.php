@@ -18,7 +18,7 @@
         }
 
         $sql .= ' order by nome';
-        $cidades = $banco->executeSql($sql, 'select');
+        $cidades = $banco->executeSql($sql);
         
         return $cidades;
     }
