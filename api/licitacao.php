@@ -25,6 +25,9 @@
     }
 
     $sql = "select 
+        l.id,
+        l.id_boletim,
+        l.boletim_edicao,
         l.situacao,
         l.objeto,
         date_format(l.datahora_abertura, '%d/%m/%Y %H:%i') as datahora_abertura,
