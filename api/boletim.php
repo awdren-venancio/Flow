@@ -1,14 +1,12 @@
 <?php
     include '../autenticacao.php';
     include "../class/database.php";
-    include "../curl/categoria.php";
+    $banco = new Database();
     
     $categoria   = $_GET['categoria'];
-
-    $banco = new Database();
-
     $categoria_array = explode(',',$categoria);
     $categoria = '';
+
     foreach($categoria_array as $row){
         $row = trim($row);
         $categoria .= "'$row',";
