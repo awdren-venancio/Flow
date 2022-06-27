@@ -26,7 +26,7 @@
 
     $sql = "select 
         l.id,
-        l.id_boletim,
+        l.boletim_id,
         l.boletim_edicao,
         l.situacao,
         l.objeto,
