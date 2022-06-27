@@ -3,36 +3,25 @@
     include "../class/database.php";
     include "../curl/categoria.php";
     
-    $segmento   = $_GET['segmento'];
+    $categoria   = $_GET['categoria'];
 
     $banco = new Database();
 
-    $segmento_array = explode(',',$segmento);
-    $segmento = '';
-    foreach($segmento_array as $row){
+    $categoria_array = explode(',',$categoria);
+    $categoria = '';
+    foreach($categoria_array as $row){
         $row = trim($row);
-        $segmento .= "'$row',";
+        $categoria .= "'$row',";
     }
 
     $sql = "select 
-        id_boletim,
-        date_format(datahora_fechamento, '%d/%m/%Y %H:%i') as datahora_fechamento,
-        id_segmento
-    from boletim where id_segmento in ($segmento'') order by datahora_fechamento desc";
+        b.id_boletim,
+        b.id_categoria,
+        c.nome as nome_categoria,
+        date_format(b.datahora_fechamento, '%d/%m/%Y %H:%i') as datahora_fechamento
+    from boletim b 
+    join categoria c on c.id = b.id_categoria
+    where b.id_categoria in ($categoria'') order by b.datahora_fechamento desc";
     $boletins = $banco->executeSql($sql);
 
-    $categorias = getAllCategoria();
-    $categorias = $categorias['filtros'];
-
-    $array_categorias = [];
-    foreach ($categorias as $categoria) {
-        $array_categorias[$categoria['id']] = $categoria['descricao'];
-    }
-
-    $array_boletins = [];
-    foreach ($boletins as $key => $boletim) {
-        $boletins[$key]['descricao_categoria'] = $array_categorias[$boletim['id_segmento']];
-    }
-
     echo json_encode($boletins);
-    

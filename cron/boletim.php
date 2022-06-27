@@ -14,12 +14,12 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 20;
+$max_boletins = 1;
 
 $categorias = getAllCategoria();
 $filtros = $categorias['filtros'];
 
-// Buscando os boletins para cada segmento/categoria
+// Buscando os boletins para cada categoria
 foreach ($filtros as $filtro) {
     $boletim_categoria = $filtro['id'];
     $curl = curl_init();
@@ -42,13 +42,13 @@ foreach ($filtros as $filtro) {
     $boletins = $response['boletins'];
 
     $qtd_boletins = 0;
-    foreach ($boletins as $segmento) {
+    foreach ($boletins as $categoria) {
         $qtd_boletins++;
         if ($qtd_boletins > $max_boletins){
             continue;
         }
-        $ultimo_boletim    = $segmento['id'];
-        $boletim_categoria = $segmento['filtro_id'];
+        $ultimo_boletim    = $categoria['id'];
+        $boletim_categoria = $categoria['filtro_id'];
 
         $curl = curl_init();
 
@@ -80,7 +80,7 @@ foreach ($filtros as $filtro) {
         if (empty($res)) {
             $sql = "insert into boletim (
                 id_boletim,
-                id_segmento,
+                id_categoria,
                 edicao,
                 datahora_fechamento,
                 datahora_inclusao
