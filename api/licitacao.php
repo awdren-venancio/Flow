@@ -28,6 +28,7 @@
         l.id,
         l.boletim_id,
         l.boletim_edicao,
+        l.boletim_categoria,
         l.situacao,
         l.objeto,
         date_format(l.datahora_abertura, '%d/%m/%Y %H:%i') as datahora_abertura,
@@ -47,12 +48,12 @@
         l.orgao_endereco,
         l.orgao_telefone,
         l.orgao_site
-    from licitacao l ";
+    from licitacao l where true ";
     if ($categoria != '') {
-        $sql .= "l.id_categoria in ($categoria'')";
+        $sql .= "and l.boletim_categoria in ($categoria'')";
     }
     if ($boletim != ''){
-        $sql .= "l.id_boletim in ($boletim'')";
+        $sql .= "and l.id_boletim in ($boletim'')";
     }
     $sql .= " limit 100";
     $licitacoes = $banco->executeSql($sql);
