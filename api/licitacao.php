@@ -58,4 +58,10 @@
     $sql .= " limit 100";
     $licitacoes = $banco->executeSql($sql);
 
+    foreach ($licitacoes as $key => $licitacao) {
+        $sql = "select * from licitacao_documento where id_licitacao = '" . $licitacao['id'] . "'";
+        $documentos = $banco->executeSql($sql);
+        $licitacoes[$key]['documentos'] = $documentos;
+    }
+
     echo json_encode($licitacoes);
