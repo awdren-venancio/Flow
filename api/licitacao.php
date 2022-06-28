@@ -50,10 +50,10 @@
         l.orgao_site
     from licitacao l where true ";
     if ($categoria != '') {
-        $sql .= "and l.boletim_categoria in ($categoria'')";
+        $sql .= " and l.boletim_categoria in ($categoria'')";
     }
     if ($boletim != ''){
-        $sql .= "and l.id_boletim in ($boletim'')";
+        $sql .= " and l.boletim_id in ($boletim'')";
     }
     $sql .= " limit 100";
     $licitacoes = $banco->executeSql($sql);
