@@ -5,6 +5,7 @@
     
     $categoria   = $_GET['categoria'];
     $boletim     = $_GET['boletim'];
+    $objeto      = $_GET['objeto'];
 
     if ($categoria != '') {
         $categoria_array = explode(',',$categoria);
@@ -54,6 +55,9 @@
     }
     if ($boletim != ''){
         $sql .= " and l.boletim_id in ($boletim'')";
+    }
+    if ($objeto != '') {
+        $sql .= " and l.objeto like '%$objeto%'";
     }
     $sql .= " limit 100";
     $licitacoes = $banco->executeSql($sql);
