@@ -46,10 +46,12 @@ class Database {
             $sql = "insert into log_erro_sql (erro, sql_erro, datahora) values ('$erro','$query',now())";
             $this->conn->query($sql);
             die();
-        }
+        } else {
 
-        $sql = "insert into log_erro_sql (erro, sql_erro, datahora) values ('Sem erro','$query',now())";
-        $this->conn->query($sql);
+            $query = str_replace("'",'##',$query);
+            $sql = "insert into log_erro_sql (erro, sql_erro, datahora) values ('Sem erro','$query',now())";
+            $this->conn->query($sql);
+        }
 
         if ($tipo == 'insert'){
             $res = mysqli_insert_id($this->conn);
