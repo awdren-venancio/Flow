@@ -3,27 +3,42 @@
     include "../class/database.php";
     $banco = new Database();
     
-    $categoria   = $_GET['categoria'];
-    $boletim     = $_GET['boletim'];
-    $objeto      = $_GET['objeto'];
+    function preparaCampoMultiselect ($val) {
+        $val = trim($val);
 
-    if ($categoria != '') {
-        $categoria_array = explode(',',$categoria);
-        $categoria = '';
-        foreach($categoria_array as $row){
-            $row = trim($row);
-            $categoria .= "'$row',";
-        }
+        if ($val != '') {
+            $val_array = explode(',',$val);
+            $val = '';
+            foreach($val_array as $row){
+                $row = trim($row);
+                $val .= "'$row',";
+            }
+        } 
+        return $val;   
     }
 
-    if ($boletim != '') {
-        $boletim_array = explode(',',$boletim);
-        $boletim = '';
-        foreach($boletim_array as $row){
-            $row = trim($row);
-            $boletim .= "'$row',";
-        }
-    }
+    $categoria               = $_GET['categoria']; // ok
+    $boletim                 = $_GET['boletim'];   // ok
+    $objeto                  = $_GET['objeto'];    // ok
+    $uf                      = $_GET['uf'];        // ok
+    $cidade                  = $_GET['cidade'];    // ok
+    $edital                  = $_GET['edital'];    // ok
+    $modalidade              = $_GET['modalidade'];       // fazer
+    $inclusao_de             = $_GET['inclusao_de'];      // fazer
+    $inclusao_ate            = $_GET['inclusao_ate'];     // fazer
+    $prazo_de                = $_GET['prazo_de'];         // fazer
+    $prazo_ate               = $_GET['prazo_ate'];        // fazer
+    $nr_conlicitacao         = $_GET['nr_conlicitacao'];  // ok
+    $orgao                   = $_GET['orgao'];     // ok
+    $obs                     = $_GET['obs'];       // ok 
+    $id_boletim_conlicitacao = $_GET['id_boletim_conlicitacao']; // ok
+    
+    $categoria   = preparaCampoMultiselect($categoria);
+    $boletim     = preparaCampoMultiselect($boletim);
+    $uf          = preparaCampoMultiselect($uf);
+    $cidade      = preparaCampoMultiselect($cidade);
+    $modalidade  = preparaCampoMultiselect($modalidade);
+    $orgao       = preparaCampoMultiselect($orgao);
 
     $sql = "select 
         l.id,
@@ -59,6 +74,28 @@
     if ($objeto != '') {
         $sql .= " and l.objeto like '%$objeto%'";
     }
+    if ($uf != '') {
+        $sql .= " and l.orgao_uf in ($uf'')";
+    }
+    if ($cidade != '') {
+        $sql .= " and l.orgao_cidade in ($cidade'')";
+    }
+    if ($edital != '') {
+        $sql .= " and l.edital = '$edital'";
+    }
+    if ($orgao != '') {
+        $sql .= " and l.orgao_codigo in ($orgao'')";
+    }
+    if ($obs != '') {
+        $sql .= " and l.observacao like '%$obs%'";
+    }
+    if ($nr_conlicitacao != '') {
+        $sql .= " and l.id = '$nr_conlicitacao'";
+    }
+    if ($id_boletim_conlicitacao != '') {
+        $sql .= " and l.boletim_id = '$id_boletim_conlicitacao'";
+    }
+
     $sql .= " limit 100";
     $licitacoes = $banco->executeSql($sql);
 
