@@ -17,6 +17,11 @@
         return $val;   
     }
 
+    function dataParaBanco ($data) {
+        $data = implode("-",array_reverse(explode("/",$data)));
+        return $data;
+    }
+
     $categoria               = $_GET['categoria']; // ok
     $boletim                 = $_GET['boletim'];   // ok
     $objeto                  = $_GET['objeto'];    // ok
@@ -33,12 +38,14 @@
     $obs                     = $_GET['obs'];       // ok 
     $id_boletim_conlicitacao = $_GET['id_boletim_conlicitacao']; // ok
     
-    $categoria   = preparaCampoMultiselect($categoria);
-    $boletim     = preparaCampoMultiselect($boletim);
-    $uf          = preparaCampoMultiselect($uf);
-    $cidade      = preparaCampoMultiselect($cidade);
-    $modalidade  = preparaCampoMultiselect($modalidade);
-    $orgao       = preparaCampoMultiselect($orgao);
+    $categoria     = preparaCampoMultiselect($categoria);
+    $boletim       = preparaCampoMultiselect($boletim);
+    $uf            = preparaCampoMultiselect($uf);
+    $cidade        = preparaCampoMultiselect($cidade);
+    $modalidade    = preparaCampoMultiselect($modalidade);
+    $orgao         = preparaCampoMultiselect($orgao);
+    $inclusao_de   = dataParaBanco($inclusao_de);
+    $inclusao_ate  = dataParaBanco($inclusao_ate);
 
     $sql = "select 
         l.id,
@@ -47,6 +54,7 @@
         l.boletim_categoria,
         l.situacao,
         l.objeto,
+        date_format(l.boletim_datahora_fechamento, '%d/%m/%Y %H:%i') as boletim_datahora_fechamento,
         date_format(l.datahora_abertura, '%d/%m/%Y %H:%i') as datahora_abertura,
         date_format(l.datahora_documento, '%d/%m/%Y %H:%i') as datahora_documento,
         date_format(l.datahora_visita, '%d/%m/%Y %H:%i') as datahora_visita,
@@ -64,7 +72,7 @@
         l.orgao_endereco,
         l.orgao_telefone,
         l.orgao_site
-    from licitacao l where true ";
+    from licitacao l where boletim_datahora_fechamento between '$inclusao_de' and '$inclusao_ate' ";
     if ($categoria != '') {
         $sql .= " and l.boletim_categoria in ($categoria'')";
     }
