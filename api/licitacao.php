@@ -18,7 +18,10 @@
     }
 
     function dataParaBanco ($data) {
-        $data = implode("-",array_reverse(explode("/",$data)));
+        $data = trim($data);
+        if ($data != ''){
+            $data = implode("-",array_reverse(explode("/",$data)));
+        }
         return $data;
     }
 
@@ -46,6 +49,8 @@
     $orgao         = preparaCampoMultiselect($orgao);
     $inclusao_de   = dataParaBanco($inclusao_de);
     $inclusao_ate  = dataParaBanco($inclusao_ate);
+    $prazo_de      = dataParaBanco($prazo_de);
+    $prazo_ate     = dataParaBanco($prazo_ate);
 
     $sql = "select 
         l.id,
@@ -87,6 +92,12 @@
     }
     if ($cidade != '') {
         $sql .= " and l.orgao_cidade in ($cidade'')";
+    }
+    if ($prazo_de != '') {
+        $sql .= " and date(l.datahora_prazo) >= '$prazo_de'";
+    }
+    if ($prazo_ate != '') {
+        $sql .= " and date(l.datahora_prazo) <= '$prazo_ate'";
     }
     if ($edital != '') {
         $sql .= " and l.edital = '$edital'";
