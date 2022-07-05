@@ -40,7 +40,6 @@
     $orgao_codigo            = $_GET['orgao_codigo'];
     $orgao_nome              = $_GET['orgao_nome'];
     $obs                     = $_GET['obs']; 
-    $id_boletim_conlicitacao = $_GET['id_boletim_conlicitacao'];
     
     $categoria     = preparaCampoMultiselect($categoria);
     $boletim       = preparaCampoMultiselect($boletim);
@@ -113,9 +112,6 @@
     }
     if ($nr_conlicitacao != '') {
         $sql .= " and l.id = '$nr_conlicitacao'";
-    }
-    if ($id_boletim_conlicitacao != '') {
-        $sql .= " and l.boletim_id = '$id_boletim_conlicitacao'";
     }
 
     $sql .= " limit 100";
