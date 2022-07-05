@@ -46,6 +46,7 @@
     $uf            = preparaCampoMultiselect($uf);
     $cidade        = preparaCampoMultiselect($cidade);
     $modalidade    = preparaCampoMultiselect($modalidade);
+    $orgao_codigo  = preparaCampoMultiselect($orgao_codigo);
     $inclusao_de   = dataParaBanco($inclusao_de);
     $inclusao_ate  = dataParaBanco($inclusao_ate);
     $prazo_de      = dataParaBanco($prazo_de);
@@ -102,7 +103,7 @@
         $sql .= " and l.edital = '$edital'";
     }
     if ($orgao_codigo != '') {
-        $sql .= " and l.orgao_codigo = '$orgao_codigo'";
+        $sql .= " and l.orgao_codigo in ($orgao_codigo'')";
     }
     if ($orgao_nome != '') {
         $sql .= " and l.orgao_nome like '%$orgao_nome%'";
