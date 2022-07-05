@@ -25,28 +25,28 @@
         return $data;
     }
 
-    $categoria               = $_GET['categoria']; // ok
-    $boletim                 = $_GET['boletim'];   // ok
-    $objeto                  = $_GET['objeto'];    // ok
-    $uf                      = $_GET['uf'];        // ok
-    $cidade                  = $_GET['cidade'];    // ok
-    $edital                  = $_GET['edital'];    // ok
-    $modalidade              = $_GET['modalidade'];       // fazer
-    $inclusao_de             = $_GET['inclusao_de'];      // fazer
-    $inclusao_ate            = $_GET['inclusao_ate'];     // fazer
-    $prazo_de                = $_GET['prazo_de'];         // fazer
-    $prazo_ate               = $_GET['prazo_ate'];        // fazer
-    $nr_conlicitacao         = $_GET['nr_conlicitacao'];  // ok
-    $orgao                   = $_GET['orgao'];     // ok
-    $obs                     = $_GET['obs'];       // ok 
-    $id_boletim_conlicitacao = $_GET['id_boletim_conlicitacao']; // ok
+    $categoria               = $_GET['categoria'];
+    $boletim                 = $_GET['boletim'];
+    $objeto                  = $_GET['objeto'];
+    $uf                      = $_GET['uf'];
+    $cidade                  = $_GET['cidade'];
+    $edital                  = $_GET['edital'];
+    $modalidade              = $_GET['modalidade'];
+    $inclusao_de             = $_GET['inclusao_de'];
+    $inclusao_ate            = $_GET['inclusao_ate'];
+    $prazo_de                = $_GET['prazo_de'];
+    $prazo_ate               = $_GET['prazo_ate'];
+    $nr_conlicitacao         = $_GET['nr_conlicitacao'];
+    $orgao_codigo            = $_GET['orgao_codigo'];
+    $orgao_nome              = $_GET['orgao_nome'];
+    $obs                     = $_GET['obs']; 
+    $id_boletim_conlicitacao = $_GET['id_boletim_conlicitacao'];
     
     $categoria     = preparaCampoMultiselect($categoria);
     $boletim       = preparaCampoMultiselect($boletim);
     $uf            = preparaCampoMultiselect($uf);
     $cidade        = preparaCampoMultiselect($cidade);
     $modalidade    = preparaCampoMultiselect($modalidade);
-    $orgao         = preparaCampoMultiselect($orgao);
     $inclusao_de   = dataParaBanco($inclusao_de);
     $inclusao_ate  = dataParaBanco($inclusao_ate);
     $prazo_de      = dataParaBanco($prazo_de);
@@ -102,8 +102,11 @@
     if ($edital != '') {
         $sql .= " and l.edital = '$edital'";
     }
-    if ($orgao != '') {
-        $sql .= " and l.orgao_codigo in ($orgao'')";
+    if ($orgao_codigo != '') {
+        $sql .= " and l.orgao_codigo = '$orgao_codigo'";
+    }
+    if ($orgao_nome != '') {
+        $sql .= " and l.orgao_nome like '%$orgao_nome%'";
     }
     if ($obs != '') {
         $sql .= " and l.observacao like '%$obs%'";
