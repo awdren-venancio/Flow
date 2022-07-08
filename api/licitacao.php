@@ -94,10 +94,10 @@
         $sql .= " and l.orgao_cidade in ($cidade'')";
     }
     if ($prazo_de != '') {
-        $sql .= " and date(l.datahora_prazo) >= '$prazo_de'";
+        $sql .= " and (date(l.datahora_prazo) >= '$prazo_de' or date(l.datahora_abertura) >= '$prazo_de')";
     }
     if ($prazo_ate != '') {
-        $sql .= " and date(l.datahora_prazo) <= '$prazo_ate'";
+        $sql .= " and (date(l.datahora_prazo) <= '$prazo_ate' or date(l.datahora_abertura) <= '$prazo_ate')";
     }
     if ($edital != '') {
         $sql .= " and l.edital = '$edital'";
