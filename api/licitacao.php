@@ -94,6 +94,7 @@
         $sql .= " and l.orgao_cidade in ($cidade'')";
     }
     if ($prazo_de != '') {
+        // Algumas licitacoes a informação de data_prazo vem no campo data_abertura
         $sql .= " and (date(l.datahora_prazo) >= '$prazo_de' or date(l.datahora_abertura) >= '$prazo_de')";
     }
     if ($prazo_ate != '') {
@@ -118,7 +119,7 @@
         $sql .= " and l.id = '$nr_conlicitacao'";
     }
 
-    $sql .= " limit 100";
+    $sql .= " limit 500";
     $licitacoes = $banco->executeSql($sql);
 
     foreach ($licitacoes as $key => $licitacao) {
