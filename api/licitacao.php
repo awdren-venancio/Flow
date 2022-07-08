@@ -102,6 +102,9 @@
     if ($edital != '') {
         $sql .= " and l.edital = '$edital'";
     }
+    if ($modalidade != '') {
+        $sql .= " and l.modalidade_abreviacao in ($modalidade'')";
+    }
     if ($orgao_codigo != '') {
         $sql .= " and l.orgao_codigo in ($orgao_codigo'')";
     }

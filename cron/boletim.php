@@ -14,7 +14,7 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 10;
+$max_boletins = 1;
 
 $categorias = getAllCategoria();
 $filtros = $categorias['filtros'];
@@ -123,7 +123,6 @@ foreach ($filtros as $filtro) {
             $orgao_uf           = $licitacao['orgao']['uf'];
             $orgao_endereco     = $licitacao['orgao']['endereco'];
             $orgao_site         = $licitacao['orgao']['site'];
-
             $orgao_telefones    = $licitacao['orgao']['telefone'];
             
             $orgao_telefone = '';
@@ -141,11 +140,38 @@ foreach ($filtros as $filtro) {
                 }
             }
 
+            $modalidade_abrev = explode('/',$edital);
+            $modalidade_abrev = $modalidade_abrev[0];
+
+            if ($modalidade_abrev != 'RDC') {
+                // Exceto RDC, considera-se os dois primeiros dígitos, ex: COMPRAS ELETRONICAS = CO, NAO INFORMADO = NÃ, INTERNACIONAL = IN
+                $modalidade_abrev = $modalidade_abrev[0].$modalidade_abrev[1];
+            }
+
+            if ($modalidade_abrev == 'AP')  $modalidade_nome = 'Audiência Pública';
+            if ($modalidade_abrev == 'CV')  $modalidade_nome = 'Carta Convite';
+            if ($modalidade_abrev == 'CO')  $modalidade_nome = 'COMPRAS ELETRÔNICAS';
+            if ($modalidade_abrev == 'CR')  $modalidade_nome = 'Concorrência';
+            if ($modalidade_abrev == 'CS')  $modalidade_nome = 'Convite Shopping';
+            if ($modalidade_abrev == 'CP')  $modalidade_nome = 'Cotação de Preços';
+            if ($modalidade_abrev == 'CE')  $modalidade_nome = 'Cotação Eletrônica';
+            if ($modalidade_abrev == 'DL')  $modalidade_nome = 'Dispensa de Licitação';
+            if ($modalidade_abrev == 'IN')  $modalidade_nome = 'INTERNACIONAL';
+            if ($modalidade_abrev == 'LE')  $modalidade_nome = 'Leilão';
+            if ($modalidade_abrev == 'NÃ')  $modalidade_nome = 'Não Informado';
+            if ($modalidade_abrev == 'PE')  $modalidade_nome = 'Pregão Eletrônico';
+            if ($modalidade_abrev == 'PR')  $modalidade_nome = 'Pregão Presencial';
+            if ($modalidade_abrev == 'RDC') $modalidade_nome = 'Regime Diferenciado de Contratação';
+            if ($modalidade_abrev == 'SM')  $modalidade_nome = 'Sem Modalidade';
+            if ($modalidade_abrev == 'TP')  $modalidade_nome = 'Tomada de Preço';
+
             $sql = "select id from licitacao where id = '$id'";
             $res = $banco->executeSql($sql);
             if (empty($res)) {
                 $sql = "insert into licitacao (
                     id,
+                    modalidade_abreviacao,
+                    modalidade_nome,
                     boletim_id,
                     boletim_datahora_fechamento,
                     boletim_edicao,
@@ -172,6 +198,8 @@ foreach ($filtros as $filtro) {
                     orgao_site
                 ) values (
                     '$id',
+                    '$modalidade_abrev',
+                    '$modalidade_nome',
                     '$boletim_id',
                     '$boletim_datahora_fechamento',
                     '$boletim_edicao',
