@@ -254,7 +254,7 @@ foreach ($filtros as $filtro) {
             $documentos = $licitacao['documento'];
             foreach ($documentos as $documento) {
                 $filename = $documento['filename'];
-                $url      = 'https://consultaonline.conlicitacao.com.br' . $documento['url'];
+                $url      = $documento['url'];
 
                 $sql = "select id from licitacao_documento where id_licitacao = '$id' and filename = '$filename'";
                 $res = $banco->executeSql($sql);
