@@ -14,7 +14,7 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 1;
+$max_boletins = 50;
 
 $categorias = getAllCategoria();
 $filtros = $categorias['filtros'];
@@ -254,7 +254,7 @@ foreach ($filtros as $filtro) {
             $documentos = $licitacao['documento'];
             foreach ($documentos as $documento) {
                 $filename = $documento['filename'];
-                $url      = 'https://consultaonline.conlicitacao.com.br' . $documento['url'];
+                $url      = $documento['url'];
 
                 $sql = "select id from licitacao_documento where id_licitacao = '$id' and filename = '$filename'";
                 $res = $banco->executeSql($sql);
@@ -268,74 +268,13 @@ foreach ($filtros as $filtro) {
                         '$filename',
                         '$url'
                     )";
-                    $banco->executeSql($sql);
+                } else {
+                    $sql = "update licitacao_documento set
+                        url = '$url'
+                    where id_licitacao = '$id_licitacao' and filename = '$filename'";
                 }
+                $banco->executeSql($sql);
             }
-        }
-
-        // Acompanhamentos
-
-        foreach($acompanhamentos as $key_acompanhamentos => $acompanhamento) {
-            foreach($acompanhamento as $key_row => $row) {
-                $row = str_replace("\'","|'",$row);
-                $acompanhamento[$key_row] = str_replace("'","\'",$row);
-            }
-            $acompanhamentos[$key_acompanhamentos] = $acompanhamento;
-        }
-
-        foreach($acompanhamentos as $acompanhamento) {
-            $id_acompanhamento  = $acompanhamento['id'];
-
-            $id_licitacao       = $acompanhamento['licitacao_id'];
-            $objeto             = $acompanhamento['objeto'];
-            $sintese            = $acompanhamento['sintese'];
-            $data_fonte         = $acompanhamento['data_fonte'];
-            $edital             = $acompanhamento['edital'];
-            $processo           = $acompanhamento['processo'];
-            $orgao_nome         = $acompanhamento['orgao']['nome'];
-            $orgao_cidade       = $acompanhamento['orgao']['cidade'];
-            $orgao_uf           = $acompanhamento['orgao']['uf'];
-
-            $sql = "select id_acompanhamento from acompanhamento where id_acompanhamento = '$id_acompanhamento'";
-            $res = $banco->executeSql($sql);
-            if (empty($res)) {
-                $sql = "insert into acompanhamento (
-                    id_acompanhamento,
-                    id_licitacao,
-                    objeto,
-                    sintese,
-                    data_fonte,
-                    edital,
-                    processo,
-                    orgao_nome,
-                    orgao_cidade,
-                    orgao_uf
-                ) values (
-                    '$id_acompanhamento',
-                    '$id_licitacao',
-                    '$objeto',
-                    '$sintese',
-                    '$data_fonte',
-                    '$edital',
-                    '$processo',
-                    '$orgao_nome',
-                    '$orgao_cidade',
-                    '$orgao_uf'
-                )";
-            } else {
-                $sql = "update acompanhamento set
-                    id_licitacao      = '$id_licitacao',
-                    objeto            = '$objeto',
-                    sintese           = '$sintese',
-                    data_fonte        = '$data_fonte',
-                    edital            = '$edital',
-                    processo          = '$processo',
-                    orgao_nome        = '$orgao_nome',
-                    orgao_cidade      = '$orgao_cidade',
-                    orgao_uf          = '$orgao_uf'
-                where id_acompanhamento = '$id_acompanhamento'";
-            }
-            $banco->executeSql($sql);
         }
     }
 }
