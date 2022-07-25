@@ -91,8 +91,8 @@ foreach ($filtros as $filtro) {
                 '$boletim_datahora_fechamento',
                 now()
             )";
+            $banco->executeSql($sql);
         }
-        $banco->executeSql($sql);
 
         foreach($licitacoes as $key_licitacao => $licitacao) {
             foreach($licitacao as $key_row => $row) {
