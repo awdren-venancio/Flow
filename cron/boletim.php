@@ -227,26 +227,27 @@ foreach ($filtros as $filtro) {
                 )";
             } else {
                 $sql = "update licitacao set
-                    situacao           = '$situacao',
-                    objeto             = '$objeto',
-                    datahora_abertura  = '$datahora_abertura',
-                    datahora_documento = '$datahora_documento',
-                    datahora_retirada  = '$datahora_retirada',
-                    datahora_visita    = '$datahora_visita',
-                    datahora_prazo     = '$datahora_prazo',
-                    edital             = '$edital',
-                    processo           = '$processo',
-                    observacao         = '$observacao',
-                    item               = '$item',
-                    preco_edital       = $preco_edital,
-                    valor_estimado     = $valor_estimado,
-                    orgao_nome         = '$orgao_nome',
-                    orgao_codigo       = '$orgao_codigo',
-                    orgao_cidade       = '$orgao_cidade',
-                    orgao_uf           = '$orgao_uf',
-                    orgao_endereco     = '$orgao_endereco',
-                    orgao_telefone     = '$orgao_telefone',
-                    orgao_site         = '$orgao_site'
+                    situacao                    = '$situacao',
+                    objeto                      = '$objeto',
+                    datahora_abertura           = '$datahora_abertura',
+                    datahora_documento          = '$datahora_documento',
+                    datahora_retirada           = '$datahora_retirada',
+                    datahora_visita             = '$datahora_visita',
+                    datahora_prazo              = '$datahora_prazo',
+                    edital                      = '$edital',
+                    processo                    = '$processo',
+                    observacao                  = '$observacao',
+                    item                        = '$item',
+                    preco_edital                = $preco_edital,
+                    valor_estimado              = $valor_estimado,
+                    orgao_nome                  = '$orgao_nome',
+                    orgao_codigo                = '$orgao_codigo',
+                    orgao_cidade                = '$orgao_cidade',
+                    orgao_uf                    = '$orgao_uf',
+                    orgao_endereco              = '$orgao_endereco',
+                    orgao_telefone              = '$orgao_telefone',
+                    orgao_site                  = '$orgao_site',
+                    datahora_ultima_atualizacao = now()
                 where id = '$id'";
             }
             $banco->executeSql($sql);
@@ -270,7 +271,8 @@ foreach ($filtros as $filtro) {
                     )";
                 } else {
                     $sql = "update licitacao_documento set
-                        url = '$url'
+                        url                         = '$url',
+                        datahora_ultima_atualizacao = now()
                     where id_licitacao = '$id' and filename = '$filename'";
                 }
                 $banco->executeSql($sql);
