@@ -14,7 +14,7 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 10;
+$max_boletins = 20;
 
 $categorias = getAllCategoria();
 $filtros = $categorias['filtros'];
@@ -268,8 +268,12 @@ foreach ($filtros as $filtro) {
                         '$filename',
                         '$url'
                     )";
-                    $banco->executeSql($sql);
+                } else {
+                    $sql = "update licitacao_documento set
+                        url = '$url'
+                    where id_licitacao = '$id' and filename = '$filename'";
                 }
+                $banco->executeSql($sql);
             }
         }
 
