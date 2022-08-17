@@ -24,6 +24,24 @@ foreach ($filtros as $filtro) {
     $boletim_categoria = $filtro['id'];
     $curl = curl_init();
 
+    $sql = "select id from categoria where id = '$boletim_categoria'";
+    $res = $banco->executeSql($sql);
+    if (empty($res)) {
+
+        $nome_categoria = $filtro['descricao'];
+
+        $sql = "insert into categoria (
+            id_interno,
+            id,
+            nome
+        ) values (
+            null,
+            '$boletim_categoria',
+            '$nome_categoria'
+        )";
+        $banco->executeSql($sql);
+    }
+
     curl_setopt_array($curl, array(
         CURLOPT_URL => "http://66.94.107.114/api/boletins.php?filtro=$boletim_categoria",
         CURLOPT_RETURNTRANSFER => true,
