@@ -26,6 +26,7 @@
     }
 
     $categoria               = $_GET['categoria'];
+    $categoriaEmpresa        = $_GET['categoriaEmpresa'];
     $boletim                 = $_GET['boletim'];
     $objeto                  = $_GET['objeto'];
     $uf                      = $_GET['uf'];
@@ -41,22 +42,24 @@
     $orgao_nome              = $_GET['orgao_nome'];
     $obs                     = $_GET['obs']; 
     
-    $categoria     = preparaCampoMultiselect($categoria);
-    $boletim       = preparaCampoMultiselect($boletim);
-    $uf            = preparaCampoMultiselect($uf);
-    $cidade        = preparaCampoMultiselect($cidade);
-    $modalidade    = preparaCampoMultiselect($modalidade);
-    $orgao_codigo  = preparaCampoMultiselect($orgao_codigo);
-    $inclusao_de   = dataParaBanco($inclusao_de);
-    $inclusao_ate  = dataParaBanco($inclusao_ate);
-    $prazo_de      = dataParaBanco($prazo_de);
-    $prazo_ate     = dataParaBanco($prazo_ate);
+    $categoria         = preparaCampoMultiselect($categoria);
+    $categoriaEmpresa  = preparaCampoMultiselect($categoriaEmpresa);
+    $boletim           = preparaCampoMultiselect($boletim);
+    $uf                = preparaCampoMultiselect($uf);
+    $cidade            = preparaCampoMultiselect($cidade);
+    $modalidade        = preparaCampoMultiselect($modalidade);
+    $orgao_codigo      = preparaCampoMultiselect($orgao_codigo);
+    $inclusao_de       = dataParaBanco($inclusao_de);
+    $inclusao_ate      = dataParaBanco($inclusao_ate);
+    $prazo_de          = dataParaBanco($prazo_de);
+    $prazo_ate         = dataParaBanco($prazo_ate);
 
     $sql = "select 
         l.id,
         l.boletim_id,
         l.boletim_edicao,
         l.boletim_categoria,
+        l.boletim_categoria as categoriaEmpresa,
         l.situacao,
         l.objeto,
         date_format(l.boletim_datahora_fechamento, '%m/%d/%Y %H:%i') as boletim_datahora_fechamento,
@@ -80,6 +83,9 @@
     from licitacao l where boletim_datahora_fechamento between '$inclusao_de' and '$inclusao_ate' ";
     if ($categoria != '') {
         $sql .= " and l.boletim_categoria in ($categoria'')";
+    }
+    if ($categoriaEmpresa != '') {
+        $sql .= " and l.boletim_categoria in ($categoriaEmpresa'')";
     }
     if ($boletim != ''){
         $sql .= " and l.boletim_id in ($boletim'')";
@@ -119,7 +125,7 @@
         $sql .= " and l.id = '$nr_conlicitacao'";
     }
 
-    $sql .= " order by boletim_datahora_fechamento desc, id desc limit 200";
+    $sql .= " order by boletim_datahora_fechamento desc, id desc limit 100";
     $licitacoes = $banco->executeSql($sql);
 
     foreach ($licitacoes as $key => $licitacao) {
