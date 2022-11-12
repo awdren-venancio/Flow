@@ -1,9 +1,9 @@
 <?php
 
 class Database {
-    private $user     = 'awdren';
-    private $password = 'Inter761200';
-    private $host     = 'database-1.cotw6xl7jgds.us-east-1.rds.amazonaws.com';
+    private $user     = 'suporte';
+    private $password = '@Inter761200';
+    private $host     = 'localhost';
     private $port     = 3306;
     private $database = 'flow';
 
