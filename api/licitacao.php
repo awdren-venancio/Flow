@@ -1,4 +1,5 @@
 <?php
+
     include '../autenticacao.php';
     include "../class/database.php";
     $banco = new Database();

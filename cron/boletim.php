@@ -1,8 +1,21 @@
 <?php
+
+ini_set('display_errors',1);
+ini_set('display_startup_erros',1);
+error_reporting(E_ALL, ~E_NOTICE);
+
 ini_set('max_execution_time', 0);
 include "../class/database.php";
 include "../curl/categoria.php";
 $banco = new Database();
+
+function formataDataHora ($value) {
+    if ($value != '') {
+        return "'" . substr($value,0,19) . "'";
+    } else {
+        return 'null';
+    }
+}
 
 $sql = "insert into log_cron (
         origem, 
@@ -14,7 +27,7 @@ $sql = "insert into log_cron (
 $id_cron = $banco->executeSql($sql);
 
 // Define a quantidade máxima de boletins a ser salvo na base de dados, limite da API é 100
-$max_boletins = 10;
+$max_boletins = 50;
 
 $categorias = getAllCategoria();
 $filtros = $categorias['filtros'];
@@ -39,6 +52,7 @@ foreach ($filtros as $filtro) {
             '$boletim_categoria',
             '$nome_categoria'
         )";
+        $sql = utf8_encode(utf8_decode($sql));
         $banco->executeSql($sql);
     }
 
@@ -90,7 +104,7 @@ foreach ($filtros as $filtro) {
         $acompanhamentos = $response['acompanhamentos'];
 
         $boletim_id                  = $boletim['id'];
-        $boletim_datahora_fechamento = $boletim['datahora_fechamento'];
+        $boletim_datahora_fechamento = formataDataHora($boletim['datahora_fechamento']);
         $boletim_edicao              = $boletim['numero_edicao'];
 
         $sql = "select id from boletim where id_boletim = '$ultimo_boletim'";
@@ -106,9 +120,10 @@ foreach ($filtros as $filtro) {
                 '$ultimo_boletim',
                 '$boletim_categoria',
                 '$boletim_edicao',
-                '$boletim_datahora_fechamento',
+                $boletim_datahora_fechamento,
                 now()
             )";
+            $sql = utf8_encode(utf8_decode($sql));
             $banco->executeSql($sql);
         }
 
@@ -124,11 +139,11 @@ foreach ($filtros as $filtro) {
             $id                 = $licitacao['id'];
             $situacao           = $licitacao['situacao'];
             $objeto             = $licitacao['objeto'];
-            $datahora_abertura  = $licitacao['datahora_abertura'];
-            $datahora_documento = $licitacao['datahora_documento'];
-            $datahora_retirada  = $licitacao['datahora_retirada'];
-            $datahora_visita    = $licitacao['datahora_visita'];
-            $datahora_prazo     = $licitacao['datahora_prazo'];
+            $datahora_abertura  = formataDataHora($licitacao['datahora_abertura']);
+            $datahora_documento = formataDataHora($licitacao['datahora_documento']);
+            $datahora_retirada  = formataDataHora($licitacao['datahora_retirada']);
+            $datahora_visita    = formataDataHora($licitacao['datahora_visita']);
+            $datahora_prazo     = formataDataHora($licitacao['datahora_prazo']);
             $edital             = $licitacao['edital'];
             $processo           = $licitacao['processo'];
             $observacao         = $licitacao['observacao'];
@@ -219,16 +234,16 @@ foreach ($filtros as $filtro) {
                     '$modalidade_abrev',
                     '$modalidade_nome',
                     '$boletim_id',
-                    '$boletim_datahora_fechamento',
+                    $boletim_datahora_fechamento,
                     '$boletim_edicao',
                     '$boletim_categoria',
                     '$situacao',
                     '$objeto',
-                    '$datahora_abertura',
-                    '$datahora_documento',
-                    '$datahora_retirada',
-                    '$datahora_visita',
-                    '$datahora_prazo',
+                    $datahora_abertura,
+                    $datahora_documento,
+                    $datahora_retirada,
+                    $datahora_visita,
+                    $datahora_prazo,
                     '$edital',
                     '$processo',
                     '$observacao',
@@ -247,11 +262,11 @@ foreach ($filtros as $filtro) {
                 $sql = "update licitacao set
                     situacao                    = '$situacao',
                     objeto                      = '$objeto',
-                    datahora_abertura           = '$datahora_abertura',
-                    datahora_documento          = '$datahora_documento',
-                    datahora_retirada           = '$datahora_retirada',
-                    datahora_visita             = '$datahora_visita',
-                    datahora_prazo              = '$datahora_prazo',
+                    datahora_abertura           = $datahora_abertura,
+                    datahora_documento          = $datahora_documento,
+                    datahora_retirada           = $datahora_retirada,
+                    datahora_visita             = $datahora_visita,
+                    datahora_prazo              = $datahora_prazo,
                     edital                      = '$edital',
                     processo                    = '$processo',
                     observacao                  = '$observacao',
@@ -268,7 +283,12 @@ foreach ($filtros as $filtro) {
                     datahora_ultima_atualizacao = now()
                 where id = '$id'";
             }
+            if ($id == '15092830') {
+                $teste = '';
+            }
+            $sql = utf8_encode(utf8_decode($sql));
             $banco->executeSql($sql);
+            //exit;
 
             $documentos = $licitacao['documento'];
             foreach ($documentos as $documento) {
@@ -276,6 +296,7 @@ foreach ($filtros as $filtro) {
                 $url      = $documento['url'];
 
                 $sql = "select id from licitacao_documento where id_licitacao = '$id' and filename = '$filename'";
+                $sql = utf8_encode(utf8_decode($sql));
                 $res = $banco->executeSql($sql);
                 if (empty($res)) {
                     $sql = "insert into licitacao_documento (
@@ -293,6 +314,7 @@ foreach ($filtros as $filtro) {
                         datahora_ultima_atualizacao = now()
                     where id_licitacao = '$id' and filename = '$filename'";
                 }
+                $sql = utf8_encode(utf8_decode($sql));
                 $banco->executeSql($sql);
             }
         }
@@ -359,10 +381,13 @@ foreach ($filtros as $filtro) {
                     orgao_uf          = '$orgao_uf'
                 where id_acompanhamento = '$id_acompanhamento'";
             }
+            $sql = utf8_encode(utf8_decode($sql));
             $banco->executeSql($sql);
         }
     }
 }
+
+echo 'fim!';
 
 $sql = "update log_cron set datahora_fim = now() where id = $id_cron";
 $banco->executeSql($sql);

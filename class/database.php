@@ -3,7 +3,7 @@
 class Database {
     private $user     = 'suporte';
     private $password = '@Inter761200';
-    private $host     = 'localhost';
+    private $host     = '66.94.107.114';
     private $port     = 3306;
     private $database = 'flow';
 
@@ -25,6 +25,8 @@ class Database {
         if (!$this->conn) {
             echo "Falha na conexao com o Banco de Dados!<br />";
             die();
+        } else {
+            $this->executeSql("set SQL_MODE = 'NO_ENGINE_SUBSTITUTION';");
         }
     }
 

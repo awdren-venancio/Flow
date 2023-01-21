@@ -165,10 +165,6 @@ foreach ($filtros as $filtro) {
             if ($modalidade_abrev == 'SM')  $modalidade_nome = 'Sem Modalidade';
             if ($modalidade_abrev == 'TP')  $modalidade_nome = 'Tomada de Preço';
 
-            if ($id == '14706551'){
-                $teste = 1;
-            }
-
             $sql = "select id from licitacao where id = '$id'";
             $res = $banco->executeSql($sql);
             if (empty($res)) {
