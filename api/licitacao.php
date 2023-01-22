@@ -126,7 +126,7 @@
         $sql .= " and l.id = '$nr_conlicitacao'";
     }
 
-    $sql .= " order by boletim_datahora_fechamento desc, id desc limit 100";
+    $sql .= " order by boletim_datahora_fechamento desc limit 100";
     $licitacoes = $banco->executeSql($sql);
 
     foreach ($licitacoes as $key => $licitacao) {
