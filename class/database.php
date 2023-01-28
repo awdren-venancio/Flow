@@ -50,12 +50,12 @@ class Database {
             die();
         }
 
-        if ($tipo == strtoupper('INSERT')){
+        if (strtoupper($tipo) == 'INSERT') {
             $res = mysqli_insert_id($this->conn);
             return $res;
         }
         
-        if ($tipo == strtoupper('SELECT')){
+        if (strtoupper($tipo) == 'SELECT') {
             $res = [];
             while ($row = mysqli_fetch_assoc($conn)){
                 $res[] = $row;
