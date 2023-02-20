@@ -283,12 +283,9 @@ foreach ($filtros as $filtro) {
                     datahora_ultima_atualizacao = now()
                 where id = '$id'";
             }
-            if ($id == '15092830') {
-                $teste = '';
-            }
+
             $sql = utf8_encode(utf8_decode($sql));
             $banco->executeSql($sql);
-            //exit;
 
             $documentos = $licitacao['documento'];
             foreach ($documentos as $documento) {
