@@ -27,6 +27,8 @@
     }
 
     $objeto                  = $_GET['objeto'];
+    $data_certame_de         = $_GET['data_certame_de'];
+    $data_certame_ate        = $_GET['data_certame_ate'];
     $uf                      = $_GET['uf'];
     $cidade                  = $_GET['cidade'];
     $edital                  = $_GET['edital'];
@@ -39,6 +41,8 @@
     $cidade            = preparaCampoMultiselect($cidade);
     $modalidade        = preparaCampoMultiselect($modalidade);
     $orgao_codigo      = preparaCampoMultiselect($orgao_codigo);
+    $data_certame_de   = dataParaBanco($data_certame_de);
+    $data_certame_ate  = dataParaBanco($data_certame_ate);
     
     $sql = "select 
         l.id,
@@ -47,6 +51,7 @@
         l.edital,
         l.processo,
         l.observacao,
+        COALESCE(datahora_documento, datahora_prazo) as data_certame,
         l.item,
         l.preco_edital,
         l.valor_estimado,
@@ -60,6 +65,12 @@
     from licitacao l where true ";
     if ($objeto != '') {
         $sql .= " and l.objeto like '%$objeto%'";
+    }
+    if ($data_certame_de != '') {
+        $sql .= " and (date(l.datahora_prazo) >= '$data_certame_de' or date(l.datahora_abertura) >= '$data_certame_de')";
+    }
+    if ($data_certame_ate != '') {
+        $sql .= " and (date(l.datahora_prazo) <= '$data_certame_ate' or date(l.datahora_abertura) <= '$data_certame_ate')";
     }
     if ($uf != '') {
         $sql .= " and l.orgao_uf in ($uf'')";
