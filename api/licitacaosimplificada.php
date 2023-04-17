@@ -26,6 +26,7 @@
         return $data;
     }
 
+    $codigo                  = $_GET['codigo'];
     $objeto                  = $_GET['objeto'];
     $data_certame_de         = $_GET['data_certame_de'];
     $data_certame_ate        = $_GET['data_certame_ate'];
@@ -46,7 +47,9 @@
     
     $sql = "select 
         l.id,
+        l.codigo,
         l.situacao,
+        l.modalidade_nome as modalidade,
         l.objeto,
         l.edital,
         l.processo,
@@ -63,6 +66,10 @@
         l.orgao_telefone,
         l.orgao_site
     from licitacao l where true ";
+
+    if ($codigo != '') {
+        $sql .= " and l.codigo = $codigo";
+    }
     if ($objeto != '') {
         $sql .= " and l.objeto like '%$objeto%'";
     }
