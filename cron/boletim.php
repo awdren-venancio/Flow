@@ -317,7 +317,7 @@ foreach ($filtros as $filtro) {
         }
 
         // Acompanhamentos
-
+/*
         foreach($acompanhamentos as $key_acompanhamentos => $acompanhamento) {
             foreach($acompanhamento as $key_row => $row) {
                 $row = str_replace("\'","|'",$row);
@@ -381,6 +381,7 @@ foreach ($filtros as $filtro) {
             $sql = utf8_encode(utf8_decode($sql));
             $banco->executeSql($sql);
         }
+        */
     }
 }
 
